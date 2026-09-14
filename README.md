@@ -116,7 +116,10 @@ Each draft arrives in final form — headline, body in brand voice, hashtags, so
 3. Set the recipient address on the Gmail node.
 4. Adjust the schedule trigger to your timezone.
 
-Detailed Vietnamese setup guide: [`docs/setup-guide-vi.docx`](./docs).
+Full setup guide — prerequisites, credentials, staged testing, a node-by-node map, customisation and troubleshooting:
+
+- [`docs/setup-guide-en.docx`](./docs/setup-guide-en.docx) — English
+- [`docs/setup-guide-vi.docx`](./docs/setup-guide-vi.docx) — Tiếng Việt
 
 ---
 
