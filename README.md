@@ -84,7 +84,7 @@ The writing node branches on content type and carries the full brand voice spec 
 
 The constraint that mattered most: **every point must state both what is good and what is not**. A single-sided post reads like marketing copy, which is precisely the thing the channel positions itself against. Making that a mandatory structural element of the prompt, rather than a stylistic suggestion, is what kept generated drafts on-brand.
 
-## What the human actually receives
+## What the I actually receives
 
 ![approval email](./assets/approval-email.png)
 
