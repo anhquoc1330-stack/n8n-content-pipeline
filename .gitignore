@@ -1,0 +1,9 @@
+.DS_Store
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+openclaw.json
+.env
+node_modules/
+sessions/
+logs/

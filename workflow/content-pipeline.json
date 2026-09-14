@@ -1,0 +1,846 @@
+{
+  "name": "Tap Hoa AI Pipeline",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 7
+            }
+          ]
+        }
+      },
+      "id": "c3791ee1-0403-48d7-8358-ed1a7a1c7710",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1200,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://tldr.tech/api/rss/ai",
+        "options": {}
+      },
+      "id": "61f4aef6-7fa6-49e5-b0bc-67d7b55eb2a5",
+      "name": "TLDR AI",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        -980,
+        -60
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "486a0b80-723a-4b05-88b8-5be43fb98d7a",
+              "name": "source",
+              "value": "TLDR AI",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "42814474-ab79-4ce0-ac14-30e44948be6b",
+      "name": "Set Source - TLDR AI",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -780,
+        -60
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://techcrunch.com/category/artificial-intelligence/feed/",
+        "options": {}
+      },
+      "id": "e05dbac5-75fe-4660-8a21-6bf2df201850",
+      "name": "TechCrunch",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        -980,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2ee381f2-b918-47b7-9712-b64b831867b6",
+              "name": "source",
+              "value": "TechCrunch",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "0ad3fb21-9102-44a2-a243-8d5716217501",
+      "name": "Set Source - TechCrunch",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -780,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://venturebeat.com/category/ai/feed/",
+        "options": {}
+      },
+      "id": "a05440c3-a448-4bf1-8906-b720680e374b",
+      "name": "VentureBeat",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        -980,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "18d14f5c-0efc-407c-8f7c-49469d115d22",
+              "name": "source",
+              "value": "VentureBeat",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "df06777c-8a58-43be-aa5d-8033c3844ac5",
+      "name": "Set Source - VentureBeat",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -780,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml",
+        "options": {}
+      },
+      "id": "6f1509f7-c84d-43f5-8b3c-9c2172969c99",
+      "name": "TheVerge",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        -980,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3abd7546-77de-4478-888e-668107f6c247",
+              "name": "source",
+              "value": "The Verge",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "f2a816c8-d039-4f04-a236-7ae1a8171008",
+      "name": "Set Source - The Verge",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -780,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "numberInputs": 4,
+        "options": {}
+      },
+      "id": "56dabc66-0b9a-420a-80a3-c7cf827998c1",
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        -560,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "0e1ab09b-d231-4278-83a4-43f21df8288c",
+              "leftValue": "={{ $json.isoDate }}",
+              "rightValue": "={{ $now.minus({ days: 7 }) }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "after"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "id": "ea58b853-22da-4e9f-8986-9ae80698e353",
+      "name": "Filter - Tin trong 7 ngay",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -360,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Bạn là biên tập viên của fanpage \"Tạp Hoá AI\" — kênh chia sẻ kiến thức AI thực chiến cho người Việt.\n\nChấm điểm bài báo sau theo thang 1-5 (cho phép số thập phân), dựa trên 4 tiêu chí có trọng số:\n- Độ mới (30%): tin càng mới, càng chưa ai đưa thì điểm càng cao\n- Tầm ảnh hưởng (35%): ảnh hưởng tới bao nhiêu người, có thay đổi cách làm việc không\n- Tính viral (20%): khả năng được chia sẻ, bàn luận trên mạng xã hội Việt Nam\n- Giá trị thực chiến (15%): người đọc có áp dụng được ngay vào công việc không\n\nBài báo:\n- Tiêu đề: {{ $json.title }}\n- Nguồn: {{ $json.source }}\n- Ngày đăng: {{ $json.isoDate }}\n- Tóm tắt: {{ $json.contentSnippet }}\n\nTrả về JSON với 3 trường:\n- score: điểm tổng có trọng số (số, 1 chữ số thập phân)\n- category: một trong \"tin tức\" | \"công cụ\" | \"nghiên cứu\" | \"kinh doanh\"\n- ly_do: 1-2 câu tiếng Việt giải thích vì sao chấm điểm đó",
+        "hasOutputParser": true
+      },
+      "id": "d8703cf4-fcf6-4dc2-b1ff-df67514c178b",
+      "name": "Basic LLM Chain",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        -160,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-sonnet-5",
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 5"
+        },
+        "options": {}
+      },
+      "id": "6743e11d-af0b-4b9c-9421-a445d74b4cdf",
+      "name": "Anthropic Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        -200,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\"score\": 4.2, \"category\": \"tin tức\", \"ly_do\": \"Giải thích ngắn gọn\"}"
+      },
+      "id": "31d30a8c-d36d-4214-bb9d-d23904de9221",
+      "name": "Structured Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        -20,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const llmItems = $input.all();\nconst originalItems = $('Filter - Tin trong 7 ngay').all();\n\nreturn llmItems.map((item, i) => ({\n  json: {\n    ...originalItems[i].json,\n    output: item.json.output\n  }\n}));"
+      },
+      "id": "aef44dc4-a576-4349-91e6-830b477fc535",
+      "name": "Ghep lai field goc",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        180,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c9776c48-3340-428f-b4e5-fc5a41965020",
+              "leftValue": "={{ $json.output.score }}",
+              "rightValue": 3.5,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "id": "e56132e2-05c2-4b95-a5dd-69d8bc28df6e",
+      "name": "IF Score >= 3.5",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        380,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "id": "fad05de2-7b12-4724-a588-800cbd0846d5",
+      "name": "Aggregate",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        580,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.first().json.data.map(i => ({\n  ...i.output,\n  title: i.title,\n  link: i.link,\n  source: i.source,\n  isoDate: i.isoDate,\n  contentSnippet: i.contentSnippet\n}));\n\nitems.sort((a, b) => b.score - a.score);\n\nconst picked = [];\nconst usedSources = new Set();\n\nfor (const item of items) {\n  if (picked.length >= 3) break;\n  if (!usedSources.has(item.source)) {\n    picked.push(item);\n    usedSources.add(item.source);\n  }\n}\n\nfor (const item of items) {\n  if (picked.length >= 3) break;\n  if (!picked.includes(item)) picked.push(item);\n}\n\nreturn picked.map(i => ({ json: i }));"
+      },
+      "id": "ebace6d1-a110-42fd-a115-6069e605407c",
+      "name": "Pick Top 3",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        780,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "6e850a31-34e3-4da7-aeda-c73bcd8ed491",
+      "name": "Loop Over Items",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        980,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst publishedDate = new Date(item.isoDate || item.pubDate);\nconst now = new Date();\nconst hoursDiff = (now - publishedDate) / (1000 * 60 * 60);\n\nconst contentType = hoursDiff < 48 ? 'breaking_news' : 'phan_tich_chuyen_sau';\n\nreturn [{\n  json: {\n    ...item,\n    contentType,\n    hoursOld: Math.round(hoursDiff)\n  }\n}];"
+      },
+      "id": "cbeb66b0-ec4d-4331-9782-1563d78410f5",
+      "name": "Phan loai tin",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Bạn là content writer của fanpage \"Tạp Hoá AI\" — kênh chia sẻ kiến thức AI thực chiến, giọng văn 60% Người Hiền Triết + 40% Người Bạn Thân: thẳng thắn, gần gũi, có chiều sâu, hướng hành động, bình tĩnh (không hype). Xưng \"mình\", gọi \"ae\"/\"bạn\" — không bao giờ dùng \"chúng ta\", \"độc giả\", \"người dùng\".\n\nBài báo cần viết:\n- Tiêu đề gốc: {{ $json.title }}\n- Nguồn: {{ $json.source }}\n- Link: {{ $json.link }}\n- Tóm tắt: {{ $json.contentSnippet }}\n- Loại bài: {{ $json.contentType }}\n\n{{ $json.contentType === 'breaking_news' ? `\nViết theo format BREAKING NEWS (200-400 từ):\n1. Tiêu đề nêu rõ đối tượng (marketer/dev/creator...), công thức: [Sự kiện]: [Đối tượng] nên chú ý [điều gì]\n2. Mở đầu cá nhân 1-2 câu, xưng mình\n3. 2-4 điểm đánh số, mỗi điểm: dịch dễ hiểu (không jargon) + so sánh với cái quen thuộc + use case cụ thể + đánh giá 2 chiều (tốt và chưa tốt, BẮT BUỘC cả hai)\n4. 1-2 câu góc nhìn tổng\n5. Kết bằng câu hỏi engagement (mở/tranh luận/hài hước nhẹ)\n6. Hashtag: #TapHoaAI #[TênChủĐề] (tối đa 3 hashtag)\nKhông hype (\"cách mạng\", \"thay đổi mọi thứ\"). Câu ngắn, đoạn ngắn.\n` : `\nViết theo format PHÂN TÍCH CHUYÊN SÂU (400-700 từ):\n1. Hook 1 dòng + emoji cảm xúc, công thức: [Sự thật/Nghịch lý] về [Chủ đề], [Hệ quả]\n2. Setup 2-3 đoạn ngắn mô tả bức tranh quen thuộc, kết bằng \"NHƯNG...\" hoặc \"Vấn đề là...\"\n3. Core Analysis (40-50% bài): sự thật phức tạp hơn, có quan điểm rõ ràng, dùng CAPS nhấn mạnh (2-4 lần), có ít nhất 1 analogy đời thường Việt Nam dễ hiểu\n4. Cân bằng 1-2 đoạn: \"Mình nói vậy không phải để...\" — thừa nhận chiều ngược lại\n5. Takeaway 1-3 câu: hành động cụ thể / câu hỏi mở / câu đúc kết đáng nhớ\n6. Hashtag: #TapHoaAI #[TênChủĐề]\nXưng mình-bạn xuyên suốt, không trung lập nhạt nhẽo.\n` }}\n\nQUAN TRỌNG: Viết văn bản thuần (plain text), TUYỆT ĐỐI không dùng ký hiệu Markdown như **in đậm**, # tiêu đề, hay bullet -/*. Nếu cần nhấn mạnh, dùng CHỮ HOA hoặc viết tự nhiên bằng lời, không dùng ký hiệu đặc biệt.\n\nDòng tiêu đề đầu tiên của bài viết PHẢI viết hoa toàn bộ (CHỮ IN HOA) để tạo điểm nhấn, thay cho việc in đậm. Các phần còn lại của bài viết viết bình thường (không in hoa toàn bộ).\n\nChỉ trả về nội dung bài viết hoàn chỉnh, không giải thích gì thêm."
+      },
+      "id": "c789ad24-a449-4cb8-852d-e93261db0bf7",
+      "name": "Viet content",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        1420,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-sonnet-5",
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 5"
+        },
+        "options": {}
+      },
+      "id": "ef20d76a-e21e-47ef-9cc7-a9a2a6af1b99",
+      "name": "Anthropic Chat Model1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        1420,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "id": "6e72192b-0315-40e3-97fb-17d660f176bf",
+      "name": "Ghep content + field goc",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1680,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.link }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text",
+              "outputPropertyName": "data"
+            }
+          }
+        }
+      },
+      "id": "a0b21269-9edf-44d6-b6b6-e62061c20769",
+      "name": "Tim anh that",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1900,
+        380
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "id": "a6027e94-5940-4239-877b-87be4d91cabb",
+      "name": "Ghep anh + content",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        2120,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst html = item.data || '';\n\nconst match = html.match(/<meta[^>]+property=[\"']og:image[\"'][^>]+content=[\"']([^\"']+)[\"']/i)\n  || html.match(/<meta[^>]+content=[\"']([^\"']+)[\"'][^>]+property=[\"']og:image[\"']/i);\n\nconst imageUrl = match ? match[1] : null;\n\nreturn [{\n  json: {\n    text: item.text,\n    title: item.title,\n    link: item.link,\n    source: item.source,\n    isoDate: item.isoDate,\n    contentType: item.contentType,\n    imageUrl\n  }\n}];"
+      },
+      "id": "aa2b6881-eee3-4bb3-aa06-dec0a670835a",
+      "name": "Tach anh og:image",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2340,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all().map(i => i.json);\n\nconst postsHtml = items.map((item, idx) => `\n  <div style=\"margin-bottom:30px; padding:15px; border:1px solid #ddd; border-radius:8px;\">\n    <h3>Bai ${idx + 1}: ${item.title}</h3>\n    ${item.imageUrl ? `<img src=\"${item.imageUrl}\" style=\"max-width:100%; border-radius:6px;\" />` : '<p><em>(Khong tim duoc anh, tu tim them nhe)</em></p>'}\n    <p style=\"white-space:pre-wrap;\">${item.text}</p>\n    <p><a href=\"${item.link}\">Nguon: ${item.source}</a></p>\n  </div>\n`).join('');\n\nconst html = `\n  <h2>3 bai AI da viet san hom nay - Tap Hoa AI</h2>\n  <p>Ung bai nao thi copy noi dung + tai anh, dan thang len Facebook nhe.</p>\n  ${postsHtml}\n`;\n\nreturn [{ json: { emailHtml: html } }];"
+      },
+      "id": "bc634c80-d41c-449f-a678-6384b3b549c2",
+      "name": "Soan email duyet",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "your-email@example.com",
+        "subject": "3 bai AI hom nay - Tap Hoa AI",
+        "emailType": "html",
+        "message": "={{ $json.emailHtml }}",
+        "options": {}
+      },
+      "id": "549a601f-2f3f-460e-935e-cd1afbbbb778",
+      "name": "Send a message",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1420,
+        120
+      ]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "TLDR AI",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "TechCrunch",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "VentureBeat",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "TheVerge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TLDR AI": {
+      "main": [
+        [
+          {
+            "node": "Set Source - TLDR AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Source - TLDR AI": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TechCrunch": {
+      "main": [
+        [
+          {
+            "node": "Set Source - TechCrunch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Source - TechCrunch": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "VentureBeat": {
+      "main": [
+        [
+          {
+            "node": "Set Source - VentureBeat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Source - VentureBeat": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "TheVerge": {
+      "main": [
+        [
+          {
+            "node": "Set Source - The Verge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Source - The Verge": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Filter - Tin trong 7 ngay",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter - Tin trong 7 ngay": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Ghep lai field goc",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ghep lai field goc": {
+      "main": [
+        [
+          {
+            "node": "IF Score >= 3.5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF Score >= 3.5": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Pick Top 3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pick Top 3": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Soan email duyet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Phan loai tin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Phan loai tin": {
+      "main": [
+        [
+          {
+            "node": "Viet content",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Ghep content + field goc",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Viet content",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Viet content": {
+      "main": [
+        [
+          {
+            "node": "Ghep content + field goc",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ghep content + field goc": {
+      "main": [
+        [
+          {
+            "node": "Tim anh that",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Ghep anh + content",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Tim anh that": {
+      "main": [
+        [
+          {
+            "node": "Ghep anh + content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ghep anh + content": {
+      "main": [
+        [
+          {
+            "node": "Tach anh og:image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tach anh og:image": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Soan email duyet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "instanceId": "restored"
+  }
+}
