@@ -123,6 +123,6 @@ Full setup guide — prerequisites, credentials, staged testing, a node-by-node 
 
 ---
 
-Built and operated by **Canh Vu** — International Business, Foreign Trade University.
+Built and operated by **Vu Quoc Anh** — International Business, Foreign Trade University.
 
 No API keys, tokens or credentials are committed. The Gmail node's recipient is a placeholder; replace it before running.
